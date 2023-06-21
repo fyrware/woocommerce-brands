@@ -1,2 +1,4 @@
 # woocommerce-brands
- Create and organize products by their brand
+**Requires `yuzu-framework` to be installed and activated**
+
+Create and organize products by their brand
