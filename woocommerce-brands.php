@@ -9,7 +9,7 @@
  * Text Domain: wc-brands
  */
 
-const WC_BRANDS_TEXT_DOMAIN = 'wc-brands';
+const WC_BRANDS_TEXT_DOMAIN = 'wc_brands';
 
 function wc_brands_can_run(): bool {
     return function_exists('is_yuzu')
@@ -23,15 +23,16 @@ register_activation_hook(__FILE__, function() {
 });
 
 add_action('admin_notices', function() {
-    if (!wc_brands_can_run()) { ?>
-        <div class="notice notice-error">
-            <p>
-                <strong>Missing Dependencis:</strong>
-                Some plugin dependencies are missing for <em>WooCommerce Brands</em>.
-                Please consult the documentation for more information.
-            </p>
-        </div>
-    <?php }
+    if (!wc_brands_can_run()) {
+        yz_notice([
+            'variant' => 'error',
+            'title'   => __('Missing Dependencies', WC_BRANDS_TEXT_DOMAIN),
+            'content' => function() {
+                yz_text(__('Some plugin dependencies are missing for <em>WooCommerce Brands</em>', WC_BRANDS_TEXT_DOMAIN));
+                yz_text(__('Please consult the documentation for more information.', WC_BRANDS_TEXT_DOMAIN));
+            }
+        ]);
+    }
 });
 
 add_action('plugins_loaded', function() {

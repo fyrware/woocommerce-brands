@@ -37,46 +37,79 @@ function wc_brands_init(): void {
 }
 
 function wc_brands_add_form_fields(): void {
-    yuzu_render_admin_media_field(array(
-        'id' => 'logo_id',
+    yz_form_field([
+        'id'    => 'logo',
         'label' => __('Logo', WC_BRANDS_TEXT_DOMAIN),
-    ));
-    yuzu_render_admin_color_field(array(
-        'id' => 'primary_color',
+        'type'  => 'media',
+    ]);
+    yz_form_field([
+        'id'    => 'primary-color',
         'label' => __('Primary Color', WC_BRANDS_TEXT_DOMAIN),
-    ));
+        'type'  => 'color',
+    ]);
 }
 
 function wc_brands_edit_form_fields(WP_Term $term): void {
-    $logo_id = absint(get_term_meta($term->term_id, 'logo_id', true));
-    $logo_src = wp_get_attachment_thumb_url($logo_id);
-    $primary_color = get_term_meta($term->term_id, 'primary_color', true);
+    $logo = absint(get_term_meta($term->term_id, 'logo', true));
+    $logo_src = wp_get_attachment_thumb_url($logo);
+    $primary_color = get_term_meta($term->term_id, 'primary-color', true);
 
-    yuzu_render_admin_media_field(array(
-        'id' => 'logo_id',
-        'label' => __('Logo', WC_BRANDS_TEXT_DOMAIN),
-        'value' => $logo_id,
-        'preview' => $logo_src,
-        'display_as' => 'table'
-    ));
-
-    yuzu_render_admin_color_field(array(
-        'id' => 'primary_color',
-        'label' => __('Primary Color', WC_BRANDS_TEXT_DOMAIN),
-        'value' => $primary_color,
-        'display_as' => 'table'
-    ));
+    yz_element('tr', [
+        'class' => '',
+        'children' => function() use($logo, $logo_src) {
+            yz_element('th', [
+                'children' => function() {
+                    yz_text(__('Logo', WC_BRANDS_TEXT_DOMAIN), [
+                        'variant' => 'label',
+                        'attributes' => ['for' => 'logo']
+                    ]);
+                }
+            ]);
+            yz_element('td', [
+                'children' => function() use($logo, $logo_src) {
+                    yz_media_picker([
+                        'id' => 'logo',
+                        'value' => $logo,
+                        'preview' => $logo_src,
+                    ]);
+                }
+            ]);
+        }
+    ]);
+    yz_element('tr', [
+        'class' => '',
+        'children' => function() use($primary_color) {
+            yz_element('th', [
+                'children' => function() {
+                    yz_text(__('Primary Color', WC_BRANDS_TEXT_DOMAIN), [
+                        'variant' => 'label',
+                        'attributes' => ['for' => 'primary-color']
+                    ]);
+                }
+            ]);
+            yz_element('td', [
+                'children' => function() use($primary_color) {
+                    yz_color_picker([
+                        'id' => 'primary-color',
+                        'value' => $primary_color,
+                    ]);
+                }
+            ]);
+        }
+    ]);
 }
 
 function wc_brands_save_form_fields(int $term_id, string $taxonomy_id, string $taxonomy): void {
-    $logo_id = $_POST['logo_id'] ?? '';
-    $primary_color = $_POST['primary_color'] ?? '';
+    if ($taxonomy === 'product_brand') {
+        $logo = $_POST['logo'] ?? '';
+        $primary_color = $_POST['primary-color'] ?? '';
 
-    if (!empty($logo_id) && $taxonomy === 'product_brand') {
-        update_term_meta($term_id, 'logo_id', $logo_id);
-    }
+        if (!empty($logo)) {
+            update_term_meta($term_id, 'logo', $logo);
+        }
 
-    if (!empty($primary_color) && $taxonomy === 'product_brand') {
-        update_term_meta($term_id, 'primary_color', $primary_color);
+        if (!empty($primary_color)) {
+            update_term_meta($term_id, 'primary-color', $primary_color);
+        }
     }
 }
