@@ -1,7 +1,7 @@
 <?php
 
 function wc_brands_init(): void {
-    register_taxonomy('product_brand', 'product', array(
+    register_taxonomy(WC_BRANDS_TAXONOMY_NAME, 'product', array(
         'label' => __('Brand', WC_BRANDS_TEXT_DOMAIN),
         'rewrite' => array('slug' => 'brand'),
         'hierarchical' => true,
@@ -100,7 +100,7 @@ function wc_brands_edit_form_fields(WP_Term $term): void {
 }
 
 function wc_brands_save_form_fields(int $term_id, string $taxonomy_id, string $taxonomy): void {
-    if ($taxonomy === 'product_brand') {
+    if ($taxonomy === WC_BRANDS_TAXONOMY_NAME) {
         $logo = $_POST['logo'] ?? '';
         $primary_color = $_POST['primary-color'] ?? '';
 

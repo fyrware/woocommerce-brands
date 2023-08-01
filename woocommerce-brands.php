@@ -10,6 +10,7 @@
  */
 
 const WC_BRANDS_TEXT_DOMAIN = 'wc_brands';
+const WC_BRANDS_TAXONOMY_NAME = 'product_brand';
 
 function wc_brands_can_run(): bool {
     return function_exists('is_yuzu')
