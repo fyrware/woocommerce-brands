@@ -50,17 +50,17 @@ function wc_brands_add_form_fields(): void {
 }
 
 function wc_brands_edit_form_fields(WP_Term $term): void {
-    $logo = absint(get_term_meta($term->term_id, 'logo', true));
-    $logo_src = wp_get_attachment_thumb_url($logo);
+    $logo          = absint(get_term_meta($term->term_id, 'logo', true));
+    $logo_src      = wp_get_attachment_thumb_url($logo);
     $primary_color = get_term_meta($term->term_id, 'primary-color', true);
 
     yz_element('tr', [
-        'class' => '',
+        'class'    => '',
         'children' => function() use($logo, $logo_src) {
             yz_element('th', [
                 'children' => function() {
                     yz_text(__('Logo', WC_BRANDS_TEXT_DOMAIN), [
-                        'variant' => 'label',
+                        'variant'    => 'label',
                         'attributes' => ['for' => 'logo']
                     ]);
                 }
@@ -68,8 +68,8 @@ function wc_brands_edit_form_fields(WP_Term $term): void {
             yz_element('td', [
                 'children' => function() use($logo, $logo_src) {
                     yz_media_picker([
-                        'id' => 'logo',
-                        'value' => $logo,
+                        'id'      => 'logo',
+                        'value'   => $logo,
                         'preview' => $logo_src,
                     ]);
                 }
@@ -77,12 +77,12 @@ function wc_brands_edit_form_fields(WP_Term $term): void {
         }
     ]);
     yz_element('tr', [
-        'class' => '',
+        'class'    => '',
         'children' => function() use($primary_color) {
             yz_element('th', [
                 'children' => function() {
                     yz_text(__('Primary Color', WC_BRANDS_TEXT_DOMAIN), [
-                        'variant' => 'label',
+                        'variant'    => 'label',
                         'attributes' => ['for' => 'primary-color']
                     ]);
                 }
@@ -90,7 +90,7 @@ function wc_brands_edit_form_fields(WP_Term $term): void {
             yz_element('td', [
                 'children' => function() use($primary_color) {
                     yz_color_picker([
-                        'id' => 'primary-color',
+                        'id'    => 'primary-color',
                         'value' => $primary_color,
                     ]);
                 }
@@ -101,7 +101,7 @@ function wc_brands_edit_form_fields(WP_Term $term): void {
 
 function wc_brands_save_form_fields(int $term_id, string $taxonomy_id, string $taxonomy): void {
     if ($taxonomy === WC_BRANDS_TAXONOMY_NAME) {
-        $logo = $_POST['logo'] ?? '';
+        $logo          = $_POST['logo'] ?? '';
         $primary_color = $_POST['primary-color'] ?? '';
 
         if (!empty($logo)) {
