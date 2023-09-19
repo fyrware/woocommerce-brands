@@ -5,7 +5,7 @@ function wc_brands_init(): void {
         'label' => __('Brand', WC_BRANDS_TEXT_DOMAIN),
         'rewrite' => array('slug' => 'brand'),
         'hierarchical' => true,
-        'show_admin_column' => true,
+//        'show_admin_column' => true,
         'show_in_rest' => true,
         'show_in_quick_edit' => true,
         'show_in_nav_menus' => true,
